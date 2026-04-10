@@ -121,7 +121,7 @@
             <div class="flex justify-between text-xs">
                 <div class="legend-item">
                     <span class="legend-color bg-success"></span>
-                    <span id="successDays">0天 · 目标达成 · 早于23:00</span>
+                    <span id="successDays">0天 · 目标达成 · 18:00-23:00</span>
                 </div>
             </div>
             <div class="flex justify-between text-xs mt-2">
@@ -133,7 +133,7 @@
             <div class="flex justify-between text-xs mt-2">
                 <div class="legend-item">
                     <span class="legend-color bg-danger"></span>
-                    <span id="dangerDays">0天 · 过度熬夜 · 晚于00:00</span>
+                    <span id="dangerDays">0天 · 过度熬夜 · 00:00-07:00</span>
                 </div>
             </div>
         </div>
@@ -278,13 +278,16 @@
                 } else {
                     const [hour, minute] = sleepTime.split(':').map(Number);
                     const totalMinutes = hour * 60 + minute;
-                    const targetMinutes = 23 * 60; // 23:00
+                    const eveningStart = 18 * 60; // 18:00
+                    const targetTime = 23 * 60; // 23:00
+                    const midnight = 24 * 60; // 00:00
+                    const morningEnd = 7 * 60; // 7:00
                     
-                    if (totalMinutes < targetMinutes) {
+                    if (totalMinutes > eveningStart && totalMinutes < targetTime) {
                         dayElement.classList.add('bg-success/20', 'border', 'border-success/40');
-                    } else if (totalMinutes < targetMinutes + 60) {
+                    } else if (totalMinutes >= targetTime && totalMinutes < midnight) {
                         dayElement.classList.add('bg-warning/20', 'border', 'border-warning/40');
-                    } else {
+                    } else if (totalMinutes >= 0 && totalMinutes <= morningEnd) {
                         dayElement.classList.add('bg-danger/20', 'border', 'border-danger/40');
                     }
                 }
@@ -337,13 +340,16 @@
                 } else {
                     const [hour, minute] = sleepTime.split(':').map(Number);
                     const totalMinutes = hour * 60 + minute;
-                    const targetMinutes = 23 * 60; // 23:00
+                    const eveningStart = 18 * 60; // 18:00
+                    const targetTime = 23 * 60; // 23:00
+                    const midnight = 24 * 60; // 00:00
+                    const morningEnd = 7 * 60; // 7:00
                     
-                    if (totalMinutes < targetMinutes) {
+                    if (totalMinutes > eveningStart && totalMinutes < targetTime) {
                         dayElement.classList.add('bg-success/20', 'border', 'border-success/40');
-                    } else if (totalMinutes < targetMinutes + 60) {
+                    } else if (totalMinutes >= targetTime && totalMinutes < midnight) {
                         dayElement.classList.add('bg-warning/20', 'border', 'border-warning/40');
-                    } else {
+                    } else if (totalMinutes >= 0 && totalMinutes <= morningEnd) {
                         dayElement.classList.add('bg-danger/20', 'border', 'border-danger/40');
                     }
                 }
@@ -420,13 +426,16 @@
                     } else {
                         const [hour, minute] = sleepTime.split(':').map(Number);
                         const totalMinutes = hour * 60 + minute;
-                        const targetMinutes = 23 * 60; // 23:00
+                        const eveningStart = 18 * 60; // 18:00
+                        const targetTime = 23 * 60; // 23:00
+                        const midnight = 24 * 60; // 00:00
+                        const morningEnd = 7 * 60; // 7:00
                         
-                        if (totalMinutes < targetMinutes) {
+                        if (totalMinutes > eveningStart && totalMinutes < targetTime) {
                             dot.classList.add('bg-success');
-                        } else if (totalMinutes < targetMinutes + 60) {
+                        } else if (totalMinutes >= targetTime && totalMinutes < midnight) {
                             dot.classList.add('bg-warning');
-                        } else {
+                        } else if (totalMinutes >= 0 && totalMinutes <= morningEnd) {
                             dot.classList.add('bg-danger');
                         }
                     }
@@ -526,17 +535,20 @@
                         const dayMinutes = hour * 60 + minute;
                         totalMinutes += dayMinutes;
                         
-                        const targetMinutes = 23 * 60; // 23:00
+                        const eveningStart = 18 * 60; // 18:00
+                        const targetTime = 23 * 60; // 23:00
+                        const midnight = 24 * 60; // 00:00
+                        const morningEnd = 7 * 60; // 7:00
                         
-                        if (dayMinutes < targetMinutes) {
+                        if (dayMinutes > eveningStart && dayMinutes < targetTime) {
                             successDays++;
                             currentStreak++;
                             maxStreak = Math.max(maxStreak, currentStreak);
                         } else {
                             currentStreak = 0;
-                            if (dayMinutes < targetMinutes + 60) {
+                            if (dayMinutes >= targetTime && dayMinutes < midnight) {
                                 warningDays++;
-                            } else {
+                            } else if (dayMinutes >= 0 && dayMinutes <= morningEnd) {
                                 dangerDays++;
                             }
                         }
@@ -565,17 +577,20 @@
                         const dayMinutes = hour * 60 + minute;
                         totalMinutes += dayMinutes;
                         
-                        const targetMinutes = 23 * 60; // 23:00
+                        const eveningStart = 18 * 60; // 18:00
+                        const targetTime = 23 * 60; // 23:00
+                        const midnight = 24 * 60; // 00:00
+                        const morningEnd = 7 * 60; // 7:00
                         
-                        if (dayMinutes < targetMinutes) {
+                        if (dayMinutes > eveningStart && dayMinutes < targetTime) {
                             successDays++;
                             currentStreak++;
                             maxStreak = Math.max(maxStreak, currentStreak);
                         } else {
                             currentStreak = 0;
-                            if (dayMinutes < targetMinutes + 60) {
+                            if (dayMinutes >= targetTime && dayMinutes < midnight) {
                                 warningDays++;
-                            } else {
+                            } else if (dayMinutes >= 0 && dayMinutes <= morningEnd) {
                                 dangerDays++;
                             }
                         }
@@ -710,8 +725,8 @@
                 hourSelect.appendChild(option);
             }
             
-            // 生成分钟选项 (0-59，间隔5分钟)
-            for (let i = 0; i < 60; i += 5) {
+            // 生成分钟选项 (0-59)
+            for (let i = 0; i < 60; i++) {
                 const option = document.createElement('option');
                 option.value = i;
                 option.textContent = String(i).padStart(2, '0');
@@ -733,7 +748,7 @@
             const [hour, minute] = sleepTime.split(':').map(Number);
             
             document.getElementById('hourSelect').value = hour;
-            document.getElementById('minuteSelect').value = Math.round(minute / 5) * 5; // 四舍五入到最接近的5分钟
+            document.getElementById('minuteSelect').value = minute;
             
             // 显示模态框
             document.getElementById('editModal').classList.remove('hidden');
