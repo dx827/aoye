@@ -472,13 +472,16 @@
                 if (sleepTime && sleepTime !== '--:--') {
                     const [hour, minute] = sleepTime.split(':').map(Number);
                     const totalMinutes = hour * 60 + minute;
-                    const targetMinutes = 23 * 60; // 23:00
+                    const eveningStart = 18 * 60; // 18:00
+                    const targetTime = 23 * 60; // 23:00
+                    const midnight = 24 * 60; // 00:00
+                    const morningEnd = 7 * 60; // 7:00
                     
-                    if (totalMinutes < targetMinutes) {
+                    if (totalMinutes > eveningStart && totalMinutes < targetTime) {
                         success++;
-                    } else if (totalMinutes < targetMinutes + 60) {
+                    } else if (totalMinutes >= targetTime && totalMinutes < midnight) {
                         warning++;
-                    } else {
+                    } else if (totalMinutes >= 0 && totalMinutes <= morningEnd) {
                         danger++;
                     }
                 }
@@ -613,17 +616,20 @@
                             const dayMinutes = hour * 60 + minute;
                             totalMinutes += dayMinutes;
                             
-                            const targetMinutes = 23 * 60; // 23:00
+                            const eveningStart = 18 * 60; // 18:00
+                            const targetTime = 23 * 60; // 23:00
+                            const midnight = 24 * 60; // 00:00
+                            const morningEnd = 7 * 60; // 7:00
                             
-                            if (dayMinutes < targetMinutes) {
+                            if (dayMinutes > eveningStart && dayMinutes < targetTime) {
                                 successDays++;
                                 currentStreak++;
                                 maxStreak = Math.max(maxStreak, currentStreak);
                             } else {
                                 currentStreak = 0;
-                                if (dayMinutes < targetMinutes + 60) {
+                                if (dayMinutes >= targetTime && dayMinutes < midnight) {
                                     warningDays++;
-                                } else {
+                                } else if (dayMinutes >= 0 && dayMinutes <= morningEnd) {
                                     dangerDays++;
                                 }
                             }
